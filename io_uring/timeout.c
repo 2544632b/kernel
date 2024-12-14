@@ -51,9 +51,6 @@ struct io_timeout_rem {
 static inline bool io_is_timeout_noseq(struct io_kiocb *req)
 {
 	struct io_timeout *timeout = io_kiocb_to_cmd(req, struct io_timeout);
-	// Patch begin
-	// IOTimeout timeout = kmalloc(IOTimeout);
-	// Patch end
 	struct io_timeout_data *data = req->async_data;
 
 	return !timeout->off || data->flags & IORING_TIMEOUT_MULTISHOT;
