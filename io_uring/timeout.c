@@ -25,6 +25,19 @@ struct io_timeout {
 	struct io_kiocb			*prev;
 };
 
+// Patch begin
+class KIOTimeout {
+public:
+	struct file *file;
+	u32 off;
+	u32 target_seq;
+	u32 repeats;
+	struct list_head list;
+	struct ok_kiocb *head;
+	struct io_kiocb *prev;
+};
+// Patch end
+
 struct io_timeout_rem {
 	struct file			*file;
 	u64				addr;
@@ -38,6 +51,9 @@ struct io_timeout_rem {
 static inline bool io_is_timeout_noseq(struct io_kiocb *req)
 {
 	struct io_timeout *timeout = io_kiocb_to_cmd(req, struct io_timeout);
+	// Patch begin
+	// KIOTimeout ktimeout = kmalloc(KIOTimeout);
+	// Patch end
 	struct io_timeout_data *data = req->async_data;
 
 	return !timeout->off || data->flags & IORING_TIMEOUT_MULTISHOT;
